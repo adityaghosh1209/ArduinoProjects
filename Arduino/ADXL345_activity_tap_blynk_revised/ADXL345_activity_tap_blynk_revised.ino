@@ -54,25 +54,8 @@
 // Set password to "" for open networks.
 //char ssid[] = "aditya";
 //char pass[] = "55962001";
+ADXL345 accelerometer;//(ADXL345_INT1);
 
-BlynkTimer timer;
-WidgetLED led3(V3);
-  bool isPressed = false;
-void buttonLedWidget()
-{
-  // Read button
-
-
-  // If state has changed...
-  if (isPressed != btnState) {
-    if (isPressed) {
-      led3.on();
-    } else {
-      led3.off();
-    }
-    btnState = isPressed;
-  }
-}
 BLYNK_CONNECTED(){
   // Change Web Link Button message to "Congratulations!"
   Blynk.setProperty(V3, "offImageUrl", "https://static-image.nyc3.cdn.digitaloceanspaces.com/general/fte/congratulations.png");
@@ -87,7 +70,7 @@ void myTimerEvent()
 }
 //====================================================================================//================================blynk stops here============================================
 
-ADXL345 accelerometer(ADXL345_STD);
+
 
 void setup() 
 {
@@ -99,7 +82,7 @@ void setup()
   //Blynk.begin(auth, ssid, pass, IPAddress(192,168,1,100), 8080);
   BlynkEdgent.begin();
   // Setup a function to be called every second
-  timer.setInterval(1000L, myTimerEvent);
+  //timer.setInterval(1000L, myTimerEvent);
   // Initialize ADXL345
   Serial.println("Initialize ADXL345");
 //========================================================================
@@ -210,13 +193,13 @@ void loop()
     {
       Serial.println("Double Tap Detected");
       Blynk.logEvent("hello", "Double Tap Detected") ;
-      Blynk.notify("Double Tap Detected");
+      //Blynk.notify("Double Tap Detected");
     } else
     if (activ.isTap)
     {
       Serial.println("Tap Detected");
       Blynk.logEvent("hello", "Tap Detected") ;
-      Blynk.notify("Tap Detected");
+      //Blynk.notify("Tap Detected");
     }
     
     if (activ.isActivity)
