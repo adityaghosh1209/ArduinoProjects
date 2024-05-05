@@ -35,8 +35,9 @@
 
 #include "BlynkEdgent.h"
 //#include <BlynkTimer.h> 
-WidgetLED led1(V0);
-BlynkTimer timer;
+
+
+
 // Template ID, Device Name and Auth Token are provided by the Blynk.Cloud
 // See the Device Info tab, or Template settings
 
@@ -44,6 +45,21 @@ BlynkTimer timer;
 
 // Comment this out to disable prints and save space
 #define BLYNK_PRINT Serial
+WidgetLED led1(V3);
+
+BlynkTimer timer;
+
+// V3 LED Widget is blinking
+void blinkLedWidget()
+{
+  if (led1.getValue()) {
+    led1.off();
+    Serial.println("LED on V3: off");
+  } else {
+    led1.on();
+    Serial.println("LED on V3: on");
+  }
+}
 
 
 #include <ESP8266WiFi.h>
@@ -71,7 +87,7 @@ void myTimer()
 {
   // This function describes what will happen with each timer tick
   // e.g. writing sensor value to datastream V5
-  Blynk.virtualWrite(V2, millis() / 1000);
+  Blynk.virtualWrite(V2, (millis() / 1000)+"sec");
 }
 
 void setup() 
@@ -85,7 +101,7 @@ void setup()
   BlynkEdgent.begin();
   // Setup a function to be called every second
   timer.setInterval(1000L, myTimer); 
-  
+   timer.setInterval(1000L, blinkLedWidget);
   // Initialize ADXL345
   Serial.println("Initialize ADXL345");
 //========================================================================
@@ -210,19 +226,12 @@ void loop()
       Serial.println("Activity Detected");
     }
   
-    if(count>2){
-      led1.on();
-    }
-    else if(count>4){
-      led1.off();
-      count = 0;
-    }
+    
 
     if(Serial.available()){
       String relay = "";
       relay = Serial.readStringUntil('\n');
       Blynk.virtualWrite(V1,relay);
     }
-    count++;
   }
 }
