@@ -8,6 +8,8 @@
 
 #include <Wire.h>
 #include <ADXL345.h>
+#include <SPI.h>
+
 
 
 //==========================================================================
@@ -32,9 +34,9 @@
 #define USE_WEMOS_D1_MINI
 
 #include "BlynkEdgent.h"
-
-
-
+//#include <BlynkTimer.h> 
+WidgetLED led1(V0);
+BlynkTimer timer;
 // Template ID, Device Name and Auth Token are provided by the Blynk.Cloud
 // See the Device Info tab, or Template settings
 
@@ -62,15 +64,15 @@ BLYNK_CONNECTED(){
   Blynk.setProperty(V3, "onImageUrl",  "https://static-image.nyc3.cdn.digitaloceanspaces.com/general/fte/congratulations_pressed.png");
   Blynk.setProperty(V3, "url", "https://docs.blynk.io/en/getting-started/what-do-i-need-to-blynk/how-quickstart-device-was-made");
 }
-void myTimerEvent()
-{
-  // You can send any value at any time.
-  // Please don't send more that 10 values per second.
-  Blynk.virtualWrite(V2, millis() / 1000);
-}
+
 //====================================================================================//================================blynk stops here============================================
 
-
+void myTimer() 
+{
+  // This function describes what will happen with each timer tick
+  // e.g. writing sensor value to datastream V5
+  Blynk.virtualWrite(V2, millis() / 1000);
+}
 
 void setup() 
 {
@@ -82,7 +84,8 @@ void setup()
   //Blynk.begin(auth, ssid, pass, IPAddress(192,168,1,100), 8080);
   BlynkEdgent.begin();
   // Setup a function to be called every second
-  //timer.setInterval(1000L, myTimerEvent);
+  timer.setInterval(1000L, myTimer); 
+  
   // Initialize ADXL345
   Serial.println("Initialize ADXL345");
 //========================================================================
@@ -207,6 +210,19 @@ void loop()
       Serial.println("Activity Detected");
     }
   
+    if(count>2){
+      led1.on();
+    }
+    else if(count>4){
+      led1.off();
+      count = 0;
+    }
+
+    if(Serial.available()){
+      String relay = "";
+      relay = Serial.readStringUntil('\n');
+      Blynk.virtualWrite(V1,relay);
+    }
     
   }
 }
