@@ -223,6 +223,6 @@ void loop()
       relay = Serial.readStringUntil('\n');
       Blynk.virtualWrite(V1,relay);
     }
-    
+    count++;
   }
 }
