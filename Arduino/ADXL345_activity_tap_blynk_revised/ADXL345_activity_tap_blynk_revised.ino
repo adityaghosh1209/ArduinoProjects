@@ -89,7 +89,7 @@ void myTimer()
   // This function describes what will happen with each timer tick
   // e.g. writing sensor value to datastream V5
   Blynk.virtualWrite(V2, (millis() / 1000));
-  if(times%3600==0){
+  if(times%1200==0){
     Blynk.logEvent("awake",("awake log at t = "+times));
   }
 }
