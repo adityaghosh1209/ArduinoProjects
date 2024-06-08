@@ -117,8 +117,8 @@ void setup()
   }
 
   // Values for Activity and Inactivity detection
-  accelerometer.setActivityThreshold(1.2);    // Recommended 2 g
-  accelerometer.setInactivityThreshold(1.2);  // Recommended 2 g
+  accelerometer.setActivityThreshold(2);    // Recommended 2 g
+  accelerometer.setInactivityThreshold(2);  // Recommended 2 g
   accelerometer.setTimeInactivity(5);         // Recommended 5 s
 
   // Set activity detection only on X,Y,Z-Axis
@@ -229,6 +229,7 @@ void loop()
     if (activ.isActivity)
     {
       Serial.println("Activity Detected");
+      Blynk.logEvent("hello", "Activity Detected") ;
     }
   
     
